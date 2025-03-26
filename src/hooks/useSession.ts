@@ -1,9 +1,7 @@
 import { useCallback, useState } from 'react';
-import { AuthMethod } from '@lit-protocol/types';
+import type { AuthMethod, IRelayPKP, SessionSigs } from '@lit-protocol/types';
 import { getSessionSigs } from '../utils/lit';
 import { LitActionResource } from '@lit-protocol/auth-helpers';
-import { IRelayPKP } from '@lit-protocol/types';
-import { SessionSigs } from '@lit-protocol/types';
 import { LIT_ABILITY } from '@lit-protocol/constants';
 
 export default function useSession() {
@@ -26,10 +24,12 @@ export default function useSession() {
             resource: new LitActionResource('*'),
             ability: LIT_ABILITY.PKPSigning,
           },
+          {
+            resource: new LitActionResource('*'),
+            ability: LIT_ABILITY.LitActionExecution,
+          },
         ];
-        const expiration = new Date(
-          Date.now() + 1000 * 60 * 60 * 24 * 7
-        ).toISOString(); // 1 week
+        const expiration = new Date(Date.now() + 1000 * 60 * 10).toISOString(); // 1 week
 
         // Generate session sigs
         const sessionSigs = await getSessionSigs({

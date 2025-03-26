@@ -1,25 +1,19 @@
-interface CreateAccountProp {
-  signUp: any;
-  error?: Error;
+interface CreateAccountProps {
+  signUp: () => void;
 }
 
-export default function CreateAccount({ signUp, error }: CreateAccountProp) {
+export default function CreateAccount({ signUp }: CreateAccountProps) {
   return (
     <div className="container">
       <div className="wrapper">
-        {error && (
-          <div className="alert alert--error">
-            <p>{error.message}</p>
-          </div>
-        )}
-        <h1>Need a PKP?</h1>
+        <h1>Create your Solana Smart Wallet</h1>
         <p>
-          There doesn&apos;t seem to be a Lit wallet associated with your
-          credentials. Create one today.
+          Get started with a secure, programmable wallet that works with your
+          biometrics.
         </p>
         <div className="buttons-container">
-          <button onClick={signUp} className="btn btn--primary">
-            Sign up
+          <button type="button" className="btn btn--primary" onClick={signUp}>
+            Create wallet
           </button>
         </div>
       </div>

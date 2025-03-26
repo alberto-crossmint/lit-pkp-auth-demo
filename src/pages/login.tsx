@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import useAuthenticate from '../hooks/useAuthenticate';
 import useSession from '../hooks/useSession';
 import useAccounts from '../hooks/useAccounts';
-import { ORIGIN, signInWithDiscord, signInWithGoogle } from '../utils/lit';
+import { ORIGIN, signInWithGoogle } from '../utils/lit';
 import Dashboard from '../components/Dashboard';
 import Loading from '../components/Loading';
 import LoginMethods from '../components/LoginMethods';
@@ -15,9 +15,7 @@ export default function LoginView() {
 
   const {
     authMethod,
-    authWithEthWallet,
     authWithWebAuthn,
-    authWithStytch,
     loading: authLoading,
     error: authError,
   } = useAuthenticate(redirectUri);
@@ -41,10 +39,6 @@ export default function LoginView() {
 
   async function handleGoogleLogin() {
     await signInWithGoogle(redirectUri);
-  }
-
-  async function handleDiscordLogin() {
-    await signInWithDiscord(redirectUri);
   }
 
   function goToSignUp() {
@@ -107,10 +101,6 @@ export default function LoginView() {
   return (
     <LoginMethods
       handleGoogleLogin={handleGoogleLogin}
-      handleDiscordLogin={handleDiscordLogin}
-      authWithEthWallet={authWithEthWallet}
-      authWithWebAuthn={authWithWebAuthn}
-      authWithStytch={authWithStytch}
       signUp={goToSignUp}
       error={error}
     />

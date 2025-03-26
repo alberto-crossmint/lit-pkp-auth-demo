@@ -7,14 +7,23 @@ export default function Loading({ copy, error }: LoadingProps) {
   return (
     <div className="container">
       <div className="wrapper">
-        {error && (
-          <div className="alert alert--error">
-            <p>{error.message}</p>
+        <div className="loading">
+          <div className="loading__content">
+            <div className="loading__spinner">
+              <div className="loading__spinner-inner" />
+            </div>
+            <h2>Setting up your Solana signer</h2>
+            <p>{copy}</p>
+            <div className="loading__status">
+              <div className="loading__status-dot" />
+              <span>Processing your request...</span>
+            </div>
           </div>
-        )}
-        <div className="loader-container">
-          <div className="loader"></div>
-          <p>{copy}</p>
+          {error && (
+            <div className="alert alert--error">
+              <p>{error.message}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

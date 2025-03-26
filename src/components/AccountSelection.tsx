@@ -1,11 +1,9 @@
-import * as RadioGroup from '@radix-ui/react-radio-group';
+import type { IRelayPKP } from '@lit-protocol/types';
+import type { Dispatch, SetStateAction } from 'react';
 
-import { IRelayPKP } from '@lit-protocol/types';
-import { useState } from 'react';
-
-interface AccountSelectionProp {
+interface AccountSelectionProps {
   accounts: IRelayPKP[];
-  setCurrentAccount: any;
+  setCurrentAccount: Dispatch<SetStateAction<IRelayPKP>>;
   error?: Error;
 }
 
@@ -13,15 +11,7 @@ export default function AccountSelection({
   accounts,
   setCurrentAccount,
   error,
-}: AccountSelectionProp) {
-  const [selectedValue, setSelectedValue] = useState<string>('0');
-
-  async function handleSubmit(event: any) {
-    event.preventDefault();
-    const account = accounts[parseInt(selectedValue)];
-    return setCurrentAccount(account);
-  }
-
+}: AccountSelectionProps) {
   return (
     <div className="container">
       <div className="wrapper">
@@ -30,43 +20,36 @@ export default function AccountSelection({
             <p>{error.message}</p>
           </div>
         )}
-        <h1>Choose your account</h1>
-        <p>Continue with one of your accounts.</p>
-        <form onSubmit={handleSubmit} className="form">
-          <RadioGroup.Root
-            className="accounts-wrapper"
-            defaultValue="0"
-            onValueChange={setSelectedValue}
-            aria-label="View accounts"
-          >
-            {accounts.map((account, index) => (
-              <div
-                key={`account-${index}`}
-                className={`account-item ${
-                  selectedValue === index.toString() && 'account-item--selected'
-                }`}
+        <h1>Select an account</h1>
+        <p>Choose which account you'd like to use.</p>
+        <div className="account-selection">
+          <div className="account-list">
+            {accounts.map(account => (
+              <button
+                key={account.ethAddress}
+                className="account-card"
+                onClick={() => setCurrentAccount(account)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    setCurrentAccount(account);
+                  }
+                }}
+                type="button"
               >
-                <RadioGroup.Item
-                  className="account-item__radio"
-                  value={index.toString()}
-                  id={account.ethAddress}
-                >
-                  {' '}
-                  <RadioGroup.Indicator className="account-item__indicator" />
-                </RadioGroup.Item>
-                <label
-                  className="account-item__label"
-                  htmlFor={account.ethAddress}
-                >
-                  {account.ethAddress.toLowerCase()}
-                </label>
-              </div>
+                <div className="account-card__content">
+                  <div className="account-card__address">
+                    {account.ethAddress.slice(0, 6)}...
+                    {account.ethAddress.slice(-4)}
+                  </div>
+                  <div className="account-card__balance">
+                    <span className="balance-label">Balance</span>
+                    <span className="balance-value">0 SOL</span>
+                  </div>
+                </div>
+              </button>
             ))}
-          </RadioGroup.Root>
-          <button type="submit" className="btn btn--primary">
-            Continue
-          </button>
-        </form>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ export default function WebAuthn({
           </div>
         )}
         <div className="loader-container">
-          <div className="loader"></div>
+          <div className="loader" />
           <p>Follow the prompts to continue...</p>
         </div>
       </>
@@ -70,6 +70,7 @@ export default function WebAuthn({
               Create a credential
             </button>
             <button
+              type="button"
               onClick={() => setView('default')}
               className="btn btn--link"
             >
@@ -92,6 +93,7 @@ export default function WebAuthn({
               Sign in with passkey
             </button>
             <button
+              type="button"
               onClick={() => setView('default')}
               className="btn btn--link"
             >

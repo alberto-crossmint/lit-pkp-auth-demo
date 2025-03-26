@@ -1,33 +1,16 @@
-import { useState } from 'react';
-
 import AuthMethods from './AuthMethods';
-import WalletMethods from './WalletMethods';
-import WebAuthn from './WebAuthn';
-import StytchOTP from './StytchOTP';
 
 interface LoginProps {
   handleGoogleLogin: () => Promise<void>;
-  handleDiscordLogin: () => Promise<void>;
-  authWithEthWallet: any;
-  authWithWebAuthn: any;
-  authWithStytch: any;
-  signUp: any;
+  goToSignUp: () => void;
   error?: Error;
 }
 
-type AuthView = 'default' | 'email' | 'phone' | 'wallet' | 'webauthn';
-
 export default function LoginMethods({
   handleGoogleLogin,
-  handleDiscordLogin,
-  authWithEthWallet,
-  authWithWebAuthn,
-  authWithStytch,
-  signUp,
+  goToSignUp,
   error,
 }: LoginProps) {
-  const [view, setView] = useState<AuthView>('default');
-
   return (
     <div className="container">
       <div className="wrapper">
@@ -36,49 +19,18 @@ export default function LoginMethods({
             <p>{error.message}</p>
           </div>
         )}
-        {view === 'default' && (
-          <>
-            <h1>Welcome back</h1>
-            <p>Access your Lit wallet.</p>
-            <AuthMethods
-              handleGoogleLogin={handleGoogleLogin}
-              handleDiscordLogin={handleDiscordLogin}
-              setView={setView}
-            />
-            <div className="buttons-container">
-              <button type="button" className="btn btn--link" onClick={signUp}>
-                Need an account? Sign up
-              </button>
-            </div>
-          </>
-        )}
-        {view === 'email' && (
-          <StytchOTP
-            method={'email'}
-            authWithStytch={authWithStytch}
-            setView={setView}
-          />
-        )}
-        {view === 'phone' && (
-          <StytchOTP
-            method={'phone'}
-            authWithStytch={authWithStytch}
-            setView={setView}
-          />
-        )}
-        {view === 'wallet' && (
-          <WalletMethods
-            authWithEthWallet={authWithEthWallet}
-            setView={setView}
-          />
-        )}
-        {view === 'webauthn' && (
-          <WebAuthn
-            start={'authenticate'}
-            authWithWebAuthn={authWithWebAuthn}
-            setView={setView}
-          />
-        )}
+        <div className="dashboard-header">
+          <h1>Login to Your Solana Signer</h1>
+          <p className="dashboard-subtitle">
+            Access your secure, programmable key for your Solana wallet
+          </p>
+        </div>
+        <AuthMethods handleGoogleLogin={handleGoogleLogin} setView={() => {}} />
+        <div className="buttons-container">
+          <button type="button" className="btn btn--link" onClick={goToSignUp}>
+            Don't have a signer? Sign up
+          </button>
+        </div>
       </div>
     </div>
   );
